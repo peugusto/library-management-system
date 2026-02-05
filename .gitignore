@@ -1,0 +1,23 @@
+# — Eclipse / Java —
+
+bin/
+*.class
+
+
+tmp/
+*.tmp
+*.bak
+*.swp
+
+
+.DS_Store
+Thumbs.db
+
+
+*.log
+
+
+*.db
+*.properties
+
+.settings/
