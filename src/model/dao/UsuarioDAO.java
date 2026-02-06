@@ -8,5 +8,5 @@ public interface UsuarioDAO {
 	List<Usuario> getAllUser();
 	void updateUser(Integer id);
 	void insertUser(Usuario user);
-	void deleteUser(Integer id);
+	void deleteUserById(Integer id);
 }

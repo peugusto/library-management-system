@@ -19,13 +19,14 @@ public class Program {
 		int op =  0;
 		
 		do {
+			System.out.println("--- Sistema de biblioteca ---");
 			System.out.println("1. Cadastrar usuários");
-			System.out.println("2. Listar todos os usuários;");
+			System.out.println("2. Listar todos os usuários");
 			System.out.println("3- Cadastrar livros");
 			System.out.println("4- Listar todos os livros");
 			System.out.println("5- Realizar empréstimos");
 			System.out.println("6- Renovar / Encerrar emprestimos");
-			
+			System.out.print("Opção: ");
 			op = Integer.parseInt(reader.readLine());
 			
 		}while(op <= 0 || op > 7);
@@ -43,7 +44,7 @@ public class Program {
 				
 				
 		        UsuarioService service = new UsuarioService();
-		        service.validar(new Usuario(nome,email));
+		        service.validarCampos(new Usuario(nome,email));
 	
 				
 				System.out.println("Usuario criado!");
