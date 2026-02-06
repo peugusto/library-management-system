@@ -14,14 +14,14 @@ public class DB {
 	
 	
 	public static Connection getConnection() {
-		if (conn != null) {
+		if (conn == null) {
 			try {
 				Properties props = loadProperties();
 				String url = props.getProperty("dburl");
-				conn = DriverManager.getConnection(url);
+				conn = DriverManager.getConnection(url, props);
 				
 			}catch(SQLException e) {
-				throw new DBException("Erro ao obter a conexão");
+				e.printStackTrace();
 			}
 			
 		}

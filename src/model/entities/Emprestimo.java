@@ -1,7 +1,5 @@
 package model.entities;
-
 import java.time.LocalDate;
-
 import model.entities.enums.StatusEmprestimo;
 
 public class Emprestimo {

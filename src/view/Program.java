@@ -3,15 +3,15 @@ package view;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Connection;
 import java.util.Locale;
 
-import db.DB;
 import model.entities.Usuario;
+import model.services.BusinessException;
+import model.services.UsuarioService;
 
 
 public class Program {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NumberFormatException, IOException {
 		
 		Locale.setDefault(Locale.US);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -25,6 +25,9 @@ public class Program {
 			System.out.println("4- Listar todos os livros");
 			System.out.println("5- Realizar empréstimos");
 			System.out.println("6- Renovar / Encerrar emprestimos");
+			
+			op = Integer.parseInt(reader.readLine());
+			
 		}while(op <= 0 || op > 7);
 		
 		switch (op) {
@@ -38,11 +41,20 @@ public class Program {
 				System.out.print("Email: ");
 				String email = reader.readLine();
 				
-				Usuario user = new Usuario(nome,email);
+				
+		        UsuarioService service = new UsuarioService();
+		        service.validar(new Usuario(nome,email));
+	
+				
+				System.out.println("Usuario criado!");
 				
 				
 				
+				
+				reader.close();
 			} catch (IOException e) {
+				System.out.println("ERRO: " + e.getMessage());
+			} catch (BusinessException e) {
 				System.out.println("ERRO: " + e.getMessage());
 			}
 		}
