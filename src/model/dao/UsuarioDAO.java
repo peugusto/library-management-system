@@ -6,7 +6,7 @@ import model.entities.Usuario;
 
 public interface UsuarioDAO {
 	List<Usuario> getAllUser();
-	void updateUser(Integer id);
+	void updateUser(Integer id,String email);
 	void insertUser(Usuario user);
 	void deleteUserById(Integer id);
 }

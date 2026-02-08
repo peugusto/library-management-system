@@ -10,6 +10,7 @@ import java.util.List;
 import db.DB;
 import model.dao.UsuarioDAO;
 import model.entities.Usuario;
+import model.services.BusinessException;
 
 public class UsuarioDaoJdbc implements UsuarioDAO {
 
@@ -52,8 +53,25 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 	}
 
 	@Override
-	public void updateUser(Integer id) {
-		// TODO Auto-generated method stub
+	public void updateUser(Integer id,String email) {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("UPDATE usuario SET email = ? WHERE id = ?");
+			
+			st.setString(1, email);
+			st.setInt(2, id);
+			
+			int rowsAffected = st.executeUpdate();
+			
+			if (rowsAffected > 0) {
+				System.out.println("Usuário editado com sucesso.");
+			}
+		}catch(SQLException e) {
+			throw new BusinessException("Problema ao editar o email do usuário.");
+		}finally {
+			DB.closeStatement(st);
+		}
+
 		
 	}
 
@@ -80,6 +98,7 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 		}
 		
 	}
+
 
 	@Override
 	public void deleteUserById(Integer id) {

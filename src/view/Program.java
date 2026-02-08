@@ -38,7 +38,7 @@ public class Program {
 				do {
 					System.out.println("\n--- USUÁRIOS ---");
 					System.out.println("1. Cadastrar usuário");
-					System.out.println("2. Editar email do usuário.");
+					System.out.println("2. Listar usuário.");
 					System.out.println("3. Excluir usuário");
 					System.out.println("4. Sair");
 					System.out.print("Opção: ");
@@ -80,8 +80,13 @@ public class Program {
 								System.out.println("------");
 							}
 							
-							System.out.println("Pressione qualquer tecla para voltar ao menu.");
-							reader.readLine();
+							System.out.print("Digite o id do usuario para editar o email: ");
+							int id = Integer.parseInt(reader.readLine());
+							
+							System.out.print("Digite o novo email: ");
+							String email = reader.readLine();
+							
+							service.editarEmail(id, email);
 							
 						}catch(BusinessException e) {
 							System.out.println("ERRO: " + e.getMessage());
@@ -102,13 +107,43 @@ public class Program {
 						}catch(BusinessException e) {
 							System.out.println("ERRO: " + e.getMessage());
 						}
+						
 						break;
+						default:
+							System.out.println("Comando inválido");
+							break;
 						
 					}
+
 				
 				}while(opUsuario != 4);
-
+			case 2:
+				int opLivro = 0;
+				do {
+					System.out.println("\n---LIVROS---");
+					System.out.println("1. Cadastrar livro");
+					System.out.println("2. Listar livros");
+					System.out.println("3. Sair");
+					
+					System.out.print("Opção: ");
+					opLivro = Integer.parseInt(reader.readLine());
+					switch(opLivro) {
+					case 1:
+						break;
+					case 2:
+						break;
+					default:
+						System.out.println("Comando inválido");
+						break;
+					}
+					
+				}while(opLivro != 3);
+				break;
+			default:
+				System.out.println("Comando inválido");
+				break;
 			}
+			
 			
 			
 		}while(op != 4);
