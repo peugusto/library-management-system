@@ -1,5 +1,7 @@
 package model.services;
 
+import java.util.List;
+
 import model.dao.DaoFactory;
 import model.dao.UsuarioDAO;
 import model.entities.Usuario;
@@ -8,6 +10,9 @@ public class UsuarioService {
 	
 	private UsuarioDAO user = DaoFactory.createUsuarioDAO();
 	
+	public List<Usuario> retornarUsuarios() {
+		return user.getAllUser();
+	}
 	
 	public void validarCampos(Usuario obj) {
 		
@@ -19,6 +24,10 @@ public class UsuarioService {
 	    }
 
 	    user.insertUser(obj);
+	}
+	
+	public void listarUsuario() {
+		user.getAllUser();
 	}
 	
 	public void validarID(Integer id) throws BusinessException{

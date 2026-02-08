@@ -8,12 +8,20 @@ public class Usuario {
 	private String email;
 	private LocalDate dataCadastro;
 	private Boolean ativo;
+	
+	public Usuario() {
+		
+	}
+	
 	public Usuario(String nome, String email) {
 		super();
 		this.nome = nome;
 		this.email = email;
 		this.dataCadastro = LocalDate.now();
 		this.ativo = true;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	public Integer getId() {
 		return id;
@@ -39,8 +47,8 @@ public class Usuario {
 	public Boolean getAtivo() {
 		return ativo;
 	}
-	public void setAtivo() {
-		if (ativo) {
+	public void setAtivo(int ativo) {
+		if (ativo == 0) {
 			this.ativo = false;
 			return;
 		}

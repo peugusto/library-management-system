@@ -2,7 +2,9 @@ package model.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import db.DB;
@@ -20,8 +22,33 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 
 	@Override
 	public List<Usuario> getAllUser() {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		List<Usuario> allUsers = new ArrayList<>();
+		try {
+			st = conn.prepareStatement("SELECT * FROM usuario");
+			
+			rs = st.executeQuery();
+			
+			while(rs.next()) {
+				
+				Usuario user = new Usuario();
+				
+				user.setId(rs.getInt("id"));
+				user.setNome(rs.getString("nome"));
+				user.setEmail(rs.getString("email"));
+				user.setAtivo(rs.getInt("ativo"));
+				
+				allUsers.add(user);
+			}
+				
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DB.closeStatement(st);
+		}
+		return allUsers;
 	}
 
 	@Override
@@ -50,7 +77,6 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 			e.printStackTrace();
 		}finally {
 			DB.closeStatement(st);
-			DB.closeConnection();
 		}
 		
 	}
@@ -60,16 +86,17 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 		PreparedStatement st = null;
 		
 		try {
-			st = conn.prepareStatement("DELETE FROM livro WHERE id = ?");
+			st = conn.prepareStatement("DELETE FROM usuario WHERE id = ?");
 			st.setInt(1, id);
 			
 			st.executeUpdate();
+			
+			System.out.println("Usuario deletado! ");
 			
 		}catch(SQLException e) {
 			System.out.println("Erro ao deletar um usuário: " + e.getMessage());
 		}finally {
 			DB.closeStatement(st);
-			DB.closeConnection();
 		}
 		
 	}
