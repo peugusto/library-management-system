@@ -89,4 +89,34 @@ public class LivroDaoJdbc implements LivroDAO{
 		
 	}
 
+	@Override
+	public Boolean existeLivro(Integer id) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		int idLivro = 0;
+		
+		try {
+			st = conn.prepareStatement("SELECT id FROM livro WHERE id = ?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+
+			if(rs.next()) {
+				idLivro = rs.getInt("id");
+				
+				if (id == idLivro) {
+					return true;
+				}
+				
+			}
+
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DB.closeStatement(st);
+		}
+		
+		return false;
+	}
+
 }

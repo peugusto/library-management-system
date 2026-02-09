@@ -9,4 +9,5 @@ public interface UsuarioDAO {
 	void updateUser(Integer id,String email);
 	void insertUser(Usuario user);
 	void deleteUserById(Integer id);
+	Boolean existeUsuario(Integer id);
 }

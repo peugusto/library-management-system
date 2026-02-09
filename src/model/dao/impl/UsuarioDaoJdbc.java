@@ -112,4 +112,33 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 		
 	}
 
+	@Override
+	public Boolean existeUsuario(Integer id) {
+		
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		int idUsuario = 0;
+		
+		try {
+			st = conn.prepareStatement("SELECT id FROM usuario WHERE id = ?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			
+			if(rs.next()) {
+				idUsuario = rs.getInt("id");
+				
+				if (id == idUsuario) {
+					return true;
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DB.closeStatement(st);
+		}
+		
+		return false;
+	}
+
 }

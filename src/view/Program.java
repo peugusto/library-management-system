@@ -3,8 +3,6 @@ package view;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -13,6 +11,7 @@ import db.DB;
 import model.entities.Livro;
 import model.entities.Usuario;
 import model.services.BusinessException;
+import model.services.EmprestimoService;
 import model.services.LivroService;
 import model.services.UsuarioService;
 
@@ -210,7 +209,34 @@ public class Program {
 					
 				}while(opLivro != 4);
 				break;
+			case 3:
+				
+				EmprestimoService service = new EmprestimoService();
+				
+				try {
+					System.out.println("Digite o id do usuário: ");
+					int idUsuario = Integer.parseInt(reader.readLine());
+					System.out.println("Digite o id do livro: ");
+					int idLivro = Integer.parseInt(reader.readLine());
+					
+					service.salvarEmprestimo(idLivro, idUsuario);
+				
+					System.out.println("Pressione qualquer tecla para voltar ao menu.");
+					reader.readLine();
+				}catch(IOException e) {
+					System.out.println("ERROR: " + e.getMessage());
+				}catch(BusinessException e) {
+					System.out.println("ERROR: " + e.getMessage());
+				}
+				
+
+				break;
+			case 4:
+				System.out.println("");
+				break;
 			}
+
+				
 		}while(op != 5);
 		
 		DB.closeConnection();
