@@ -3,13 +3,17 @@ package view;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import db.DB;
+import model.entities.Livro;
 import model.entities.Usuario;
 import model.services.BusinessException;
+import model.services.LivroService;
 import model.services.UsuarioService;
 
 public class Program {
@@ -122,33 +126,93 @@ public class Program {
 				do {
 					System.out.println("\n---LIVROS---");
 					System.out.println("1. Cadastrar livro");
-					System.out.println("2. Listar livros");
-					System.out.println("3. Sair");
+					System.out.println("2. Listar os livros");
+					System.out.println("3. Excluir um livro");
+					System.out.println("4. Sair");
 					
 					System.out.print("Opção: ");
 					opLivro = Integer.parseInt(reader.readLine());
 					switch(opLivro) {
 					case 1:
+						
+						try {
+							LivroService service = new LivroService();
+							System.out.print("Digite o autor do livro: ");
+							String autor = reader.readLine();
+							System.out.print("Digite o titulo do livro: ");
+							String titulo = reader.readLine();
+							System.out.print("Digite o insira o ano de publicação do livro: ");
+							String data = reader.readLine();
+							
+				            Livro obj = new Livro(autor,titulo,data);
+				            service.adicionarLivro(obj);
+				            
+				            System.out.println("Livro inserido no banco de dados com sucesso!");
+				            
+							System.out.println("Pressione qualquer tecla para voltar ao menu.");
+							reader.readLine();
+				            
+						}catch(IOException e) {
+							System.out.println("ERROR: " + e.getMessage());
+						}catch(BusinessException e) {
+							System.out.println("ERROR: " + e.getMessage());
+						}
+			            
 						break;
 					case 2:
+
+						try {
+							
+							LivroService service = new LivroService();
+							
+							List<Livro> livros = new ArrayList<>();
+							livros = service.retonarLivros();
+							
+							for (Livro livro : livros) {
+								
+								System.out.println("ID: " + livro.getId());
+								System.out.println("Titulo: " + livro.getTitulo());
+								System.out.println("Autor: " + livro.getAutor());
+								System.out.println("Ano de publicação: " + livro.getAnoPublicacao());
+								System.out.println("Disponivel: " + livro.getDisponivel());
+								System.out.println("------");
+							}
+							
+							
+							System.out.println("Pressione qualquer tecla para voltar ao menu.");
+							reader.readLine();
+						}catch(BusinessException e) {
+							System.out.println("ERROR: " + e.getMessage());
+						}
+						
+						break;
+					case 3:
+						
+						try {
+							LivroService service = new LivroService();
+							System.out.println("Digite o id do livro: ");
+							int id = Integer.parseInt(reader.readLine());
+							
+							service.deletarLivro(id);
+							System.out.println("Pressione qualquer tecla para voltar ao menu.");
+							reader.readLine();
+						}catch(IOException e) {
+							System.out.println("ERROR: " + e.getMessage());
+						}catch(BusinessException e) {
+							System.out.println("ERROR: " + e.getMessage());
+						}
+
 						break;
 					default:
 						System.out.println("Comando inválido");
 						break;
 					}
 					
-				}while(opLivro != 3);
-				break;
-			default:
-				System.out.println("Comando inválido");
+				}while(opLivro != 4);
 				break;
 			}
-			
-			
-			
-		}while(op != 4);
+		}while(op != 5);
 		
-
 		DB.closeConnection();
 	}
 

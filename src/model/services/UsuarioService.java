@@ -19,7 +19,7 @@ public class UsuarioService {
 		if (obj.getNome() == null || obj.getNome().trim().isEmpty()) {
 			throw new BusinessException("Nenhum nome foi informado.");
 		}
-		if (!obj.getEmail().contains("@")) {
+		else if (!obj.getEmail().contains("@")) {
 			throw new BusinessException("Email inválido.");
 		}
 
@@ -30,10 +30,10 @@ public class UsuarioService {
 		if (id <= 0) {
 			throw new BusinessException("ID não pode ser menor que 0");
 		}
-		if (email.isEmpty()) {
+		else if (email.isEmpty()) {
 			throw new BusinessException("Nenhum email foi informado.");	
 		}
-		if (!email.contains("@")) {
+		else if (!email.contains("@")) {
 			throw new BusinessException("Email inválido");
 		}
 		

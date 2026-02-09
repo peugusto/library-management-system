@@ -28,19 +28,16 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 		
 		List<Usuario> allUsers = new ArrayList<>();
 		try {
-			st = conn.prepareStatement("SELECT * FROM usuario");
-			
+			st = conn.prepareStatement("SELECT * FROM usuario");			
 			rs = st.executeQuery();
-			
+
 			while(rs.next()) {
 				
-				Usuario user = new Usuario();
-				
+				Usuario user = new Usuario();				
 				user.setId(rs.getInt("id"));
 				user.setNome(rs.getString("nome"));
 				user.setEmail(rs.getString("email"));
 				user.setAtivo(rs.getInt("ativo"));
-				
 				allUsers.add(user);
 			}
 				
@@ -55,33 +52,29 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 	@Override
 	public void updateUser(Integer id,String email) {
 		PreparedStatement st = null;
+		
 		try {
-			st = conn.prepareStatement("UPDATE usuario SET email = ? WHERE id = ?");
-			
+			st = conn.prepareStatement("UPDATE usuario SET email = ? WHERE id = ?");	
 			st.setString(1, email);
 			st.setInt(2, id);
-			
+		
 			int rowsAffected = st.executeUpdate();
-			
 			if (rowsAffected > 0) {
 				System.out.println("Usuário editado com sucesso.");
 			}
+			
 		}catch(SQLException e) {
 			throw new BusinessException("Problema ao editar o email do usuário.");
 		}finally {
 			DB.closeStatement(st);
-		}
-
-		
+		}		
 	}
 
 	@Override
 	public void insertUser(Usuario user) {
 		PreparedStatement st = null;
 
-		
 		try {
-			
 			st = conn.prepareStatement("INSERT INTO usuario (nome,email,data_cadastro,ativo) VALUES (?,?,?,?)");
 			st.setString(1, user.getNome());
 			st.setString(2, user.getEmail());
@@ -98,7 +91,6 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 		}
 		
 	}
-
 
 	@Override
 	public void deleteUserById(Integer id) {
