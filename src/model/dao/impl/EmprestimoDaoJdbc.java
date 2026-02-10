@@ -67,6 +67,8 @@ public class EmprestimoDaoJdbc implements EmprestimoDAO {
 				emp.setDataFim(dataFim.toLocalDate());
 				emp.setDataInicio(dataInicio.toLocalDate());
 				emp.setStatus(StatusEmprestimo.ATIVO);
+			}else{
+				throw new BusinessException("Nenhum emprestimo em ativo ou ID inválido.");
 			}
 
 		} catch (SQLException e) {

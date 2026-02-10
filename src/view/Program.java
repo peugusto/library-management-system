@@ -258,8 +258,10 @@ public class Program {
 						opEmprestimo = Integer.parseInt(reader.readLine());
 						switch(opEmprestimo) {
 						case 1:
+							System.out.println("Pressione qualquer tecla para confirmar.");
+							reader.readLine();
 							emp.encerrar();
-							service.atualizarEmprestimo(emp);
+							service.cancelarEmprestimo(emp);
 							
 							System.out.println("Pressione qualquer tecla para voltar ao menu.");
 							reader.readLine();
