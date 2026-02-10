@@ -119,4 +119,37 @@ public class LivroDaoJdbc implements LivroDAO{
 		return false;
 	}
 
+	@Override
+	public Livro getBookByID(Integer id) {
+		
+	    PreparedStatement st = null;
+	    ResultSet rs = null;
+	    Livro livro = null;
+	    
+	    try {
+	        st = conn.prepareStatement(
+	            "SELECT id, titulo, autor, ano_publicacao, disponivel FROM livro WHERE id = ?"
+	        );
+	        st.setInt(1, id);
+
+	        rs = st.executeQuery();
+
+	        if (rs.next()) {
+	            livro = new Livro();
+	            livro.setId(rs.getInt("id"));
+	            livro.setTitulo(rs.getString("titulo"));
+	            livro.setAutor(rs.getString("autor"));
+	            livro.setAnoPublicacao(rs.getString("ano_publicacao"));
+	            livro.setDisponivel(rs.getInt("disponivel")); 
+	            
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        DB.closeStatement(st);
+	    }
+		return livro;
+	}
+
 }

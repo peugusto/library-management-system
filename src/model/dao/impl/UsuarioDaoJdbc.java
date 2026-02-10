@@ -141,4 +141,35 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 		return false;
 	}
 
+	@Override
+	public Usuario getUserById(Integer id) {
+		 PreparedStatement st = null;
+		    ResultSet rs = null;
+		    Usuario usuario = null;
+
+		    try {
+		        st = conn.prepareStatement("SELECT id, nome, email, data_cadastro, ativo FROM usuario WHERE id = ?");
+		        st.setInt(1, id);
+
+		        rs = st.executeQuery();
+
+		        if (rs.next()) {
+		            usuario = new Usuario();
+		            usuario.setId(rs.getInt("id"));
+		            usuario.setNome(rs.getString("nome"));
+		            usuario.setEmail(rs.getString("email"));
+		            usuario.setAtivo(rs.getInt("ativo")); 
+
+		        }
+
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+		        DB.closeStatement(st);
+
+		    }
+
+		    return usuario;
+	}
+
 }

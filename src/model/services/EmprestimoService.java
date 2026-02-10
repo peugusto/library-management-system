@@ -26,4 +26,19 @@ public class EmprestimoService {
 				throw new BusinessException("Livro ou Usuario não existente");
 			}
 	}
+	public Emprestimo retornarEmprestimo(int id) {
+		if (id <= 0) {
+			throw new BusinessException("ID não pode ser 0 ou menor.");
+		}
+		
+		Emprestimo emp = emprestimo.buscarPorId(id);
+		return emp;
+	}
+	
+	public void atualizarEmprestimo(Emprestimo obj) {
+		emprestimo.atualizar(obj);
+	}
+	public void cancelarEmprestimo(Emprestimo obj) {
+		emprestimo.cancelarEmprestimo(obj);
+	}
 }

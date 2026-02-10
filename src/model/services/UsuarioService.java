@@ -48,4 +48,9 @@ public class UsuarioService {
 
 		user.deleteUserById(id);
 	}
+	
+	public Usuario retornar(Integer id) {
+		return user.getUserById(id);
+	}
+	
 }

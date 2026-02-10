@@ -11,6 +11,10 @@ public class Emprestimo {
 	private StatusEmprestimo status;
 	
 	
+	public Emprestimo() {
+		
+	}
+	
     public Emprestimo(Integer id_livro, Integer id_usuario) {
         this.id_livro = id_livro;
         this.id_usuario = id_usuario;

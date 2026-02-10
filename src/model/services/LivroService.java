@@ -37,6 +37,13 @@ public class LivroService {
 		livro.insertBook(obj);
 	}
 	
+	public Livro retornar(Integer id) {
+		if (id <= 0) {
+			throw new BusinessException("ID não pode ser menor que 0");
+		}
+		
+		return livro.getBookByID(id);
+	}
 	
 }
  
