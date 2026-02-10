@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import db.DB;
+import db.DBException;
 import model.dao.LivroDAO;
 import model.entities.Livro;
+import model.services.BusinessException;
 
 public class LivroDaoJdbc implements LivroDAO{
 
@@ -41,7 +43,7 @@ public class LivroDaoJdbc implements LivroDAO{
 				allBooks.add(book);
 			}		
 		}catch(SQLException e) {
-			e.printStackTrace();
+			throw new DBException(e.getMessage());
 		}finally {
 			DB.closeStatement(st);
 		}
@@ -54,16 +56,21 @@ public class LivroDaoJdbc implements LivroDAO{
 		PreparedStatement st = null;
 		
 		try {
-			st = conn.prepareStatement("INSERT INTO livro (autor,titulo,ano_publicacao) VALUES (?,?,?)");
+			st = conn.prepareStatement("INSERT INTO livro (autor,titulo,ano_publicacao,diponivel) VALUES (?,?,?,?)");
 			st.setString(1, book.getAutor());
 			st.setString(2,book.getTitulo());
 			st.setString(3, book.getAnoPublicacao());
+			st.setBoolean(4, book.getDisponivel());
+			int rows = st.executeUpdate();
 			
-			st.executeUpdate();
-			
+			if (rows > 0) {
+				System.out.println("Livro adicionado ao banco de dados.");
+			}else {
+				throw new DBException("Erro ao adicionar o livro no banco de dados.");
+			}
 			
 		}catch(SQLException e) {
-			System.out.println("Erro ao inserir um livro: " + e.getMessage());
+			throw new DBException(e.getMessage());
 		}finally {
 			DB.closeStatement(st);
 		}
@@ -82,7 +89,7 @@ public class LivroDaoJdbc implements LivroDAO{
 			st.executeUpdate();
 			System.out.println("Livro deletado!");
 		}catch(SQLException e) {
-			System.out.println("Erro ao deletar um livro: " + e.getMessage());
+			throw new DBException(e.getMessage());
 		}finally {
 			DB.closeStatement(st);
 		}
@@ -105,13 +112,10 @@ public class LivroDaoJdbc implements LivroDAO{
 				
 				if (id == idLivro) {
 					return true;
-				}
-				
+				}	
 			}
-
-
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DBException(e.getMessage());
 		}finally {
 			DB.closeStatement(st);
 		}
@@ -142,10 +146,12 @@ public class LivroDaoJdbc implements LivroDAO{
 	            livro.setAnoPublicacao(rs.getString("ano_publicacao"));
 	            livro.setDisponivel(rs.getInt("disponivel")); 
 	            
+	        }else {
+				throw new BusinessException("Nenhum livro encontrado ou ID inválido.");
 	        }
 
 	    } catch (SQLException e) {
-	        e.printStackTrace();
+			throw new DBException(e.getMessage());
 	    } finally {
 	        DB.closeStatement(st);
 	    }

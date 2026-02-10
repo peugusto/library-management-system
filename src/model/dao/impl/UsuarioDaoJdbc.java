@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import db.DB;
+import db.DBException;
 import model.dao.UsuarioDAO;
 import model.entities.Usuario;
 import model.services.BusinessException;
@@ -81,11 +82,16 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 			st.setDate(3, java.sql.Date.valueOf(user.getDataCadastro()));
 			st.setBoolean(4, user.getAtivo());
 			
-			st.executeUpdate();
+			int rows =st.executeUpdate();
 			
+			if (rows > 0) {
+				System.out.println("Usuário adicionado ao banco de dados.");
+			}else {
+				throw new BusinessException("Erro ao adicionar usuário ao banco de dados.");
+			}
 			
 		}catch(SQLException e) {
-			e.printStackTrace();
+			throw new DBException(e.getMessage());
 		}finally {
 			DB.closeStatement(st);
 		}
@@ -105,7 +111,7 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 			System.out.println("Usuario deletado! ");
 			
 		}catch(SQLException e) {
-			System.out.println("Erro ao deletar um usuário: " + e.getMessage());
+			throw new DBException(e.getMessage());
 		}finally {
 			DB.closeStatement(st);
 		}
@@ -133,7 +139,7 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DBException(e.getMessage());
 		}finally {
 			DB.closeStatement(st);
 		}
@@ -160,10 +166,12 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 		            usuario.setEmail(rs.getString("email"));
 		            usuario.setAtivo(rs.getInt("ativo")); 
 
+		        }else {
+		        	throw new BusinessException("Usuario não existe ou ID inválido.");
 		        }
 
 		    } catch (SQLException e) {
-		        e.printStackTrace();
+				throw new DBException(e.getMessage());
 		    } finally {
 		        DB.closeStatement(st);
 

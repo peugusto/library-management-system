@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 
 import db.DB;
+import db.DBException;
 import model.entities.Emprestimo;
 import model.entities.Livro;
 import model.entities.Usuario;
@@ -94,6 +95,10 @@ public class Program {
 
 						} catch (BusinessException e) {
 							System.out.println("ERRO: " + e.getMessage());
+						}catch (DBException e) {
+							System.out.println("ERRO: " + e.getMessage());
+						} catch (IOException e) {
+							System.out.println("ERROR: " + e.getMessage());
 						}
 
 						break;
@@ -110,13 +115,12 @@ public class Program {
 							reader.readLine();
 						} catch (BusinessException e) {
 							System.out.println("ERRO: " + e.getMessage());
+						}catch (DBException e) {
+							System.out.println("ERRO: " + e.getMessage());
+						} catch (IOException e) {
+							System.out.println("ERROR: " + e.getMessage());
 						}
-
 						break;
-					default:
-						System.out.println("Comando inválido");
-						break;
-
 					}
 
 				} while (opUsuario != 4);
@@ -146,8 +150,6 @@ public class Program {
 							Livro obj = new Livro(autor, titulo, data);
 							service.adicionarLivro(obj);
 
-							System.out.println("Livro inserido no banco de dados com sucesso!");
-
 							System.out.println("Pressione qualquer tecla para voltar ao menu.");
 							reader.readLine();
 
@@ -155,6 +157,8 @@ public class Program {
 							System.out.println("ERROR: " + e.getMessage());
 						} catch (BusinessException e) {
 							System.out.println("ERROR: " + e.getMessage());
+						}catch (DBException e) {
+							System.out.println("ERRO: " + e.getMessage());
 						}
 
 						break;
@@ -181,6 +185,10 @@ public class Program {
 							reader.readLine();
 						} catch (BusinessException e) {
 							System.out.println("ERROR: " + e.getMessage());
+						}catch (DBException e) {
+							System.out.println("ERRO: " + e.getMessage());
+						} catch (IOException e) {
+							System.out.println("ERROR: " + e.getMessage());
 						}
 
 						break;
@@ -197,11 +205,11 @@ public class Program {
 							System.out.println("ERROR: " + e.getMessage());
 						} catch (BusinessException e) {
 							System.out.println("ERROR: " + e.getMessage());
+						}catch (DBException e) {
+							System.out.println("ERRO: " + e.getMessage());
 						}
 						break;
-					default:
-						System.out.println("Comando inválido");
-						break;
+
 					}
 				} while (opLivro != 4);
 				break;
@@ -224,6 +232,8 @@ public class Program {
 					System.out.println("ERROR: " + e.getMessage());
 				} catch (BusinessException e) {
 					System.out.println("ERROR: " + e.getMessage());
+				}catch (DBException e) {
+					System.out.println("ERRO: " + e.getMessage());
 				}
 
 				break;
@@ -276,17 +286,17 @@ public class Program {
 							service.atualizarEmprestimo(emp);
 							op = 3;
 							break;
-						default:
-							System.out.println("Operação inválida.");
-							break;
+
 						}
 					}while(op != 3);
 
 
 				} catch (IOException e) {
-					e.printStackTrace();
+					System.out.println("ERROR: " + e.getMessage());
 				} catch (BusinessException e) {
-					e.printStackTrace();
+					System.out.println("ERROR: " + e.getMessage());
+				}catch (DBException e) {
+					System.out.println("ERRO: " + e.getMessage());
 				}
 
 				break;

@@ -15,14 +15,6 @@ public class UsuarioService {
 	}
 
 	public void validarCampos(Usuario obj) {
-
-		if (obj.getNome() == null || obj.getNome().trim().isEmpty()) {
-			throw new BusinessException("Nenhum nome foi informado.");
-		}
-		else if (!obj.getEmail().contains("@")) {
-			throw new BusinessException("Email inválido.");
-		}
-
 		user.insertUser(obj);
 	}
 	

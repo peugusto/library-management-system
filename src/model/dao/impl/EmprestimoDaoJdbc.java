@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import db.DB;
+import db.DBException;
 import model.dao.EmprestimoDAO;
 import model.entities.Emprestimo;
 import model.entities.enums.StatusEmprestimo;
@@ -36,10 +37,12 @@ public class EmprestimoDaoJdbc implements EmprestimoDAO {
 			
 			if(row > 0) {
 				System.out.println("Empréstimo concluído com sucesso.");
+			}else {
+				throw new BusinessException("Erro ao concluir o emprestimo.");
 			}
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DBException(e.getMessage());
 		}finally {
 			DB.closeStatement(st);
 		}
@@ -72,7 +75,7 @@ public class EmprestimoDaoJdbc implements EmprestimoDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DBException(e.getMessage());
 		}finally {
 			DB.closeStatement(st);
 		}
@@ -95,10 +98,8 @@ public class EmprestimoDaoJdbc implements EmprestimoDAO {
 			}else {
 				System.out.println("Empréstimo atualizado com sucesso! ");
 			}
-		}catch(BusinessException e) {
-			throw new BusinessException("Erro ao atualizar empréstimo: " + e.getMessage());
 		}catch(SQLException e) {
-			throw new BusinessException("Erro ao atualizar empréstimo: " + e.getMessage());
+			throw new DBException(e.getMessage());
 		}
 		finally {
 			DB.closeStatement(st);
@@ -122,10 +123,8 @@ public class EmprestimoDaoJdbc implements EmprestimoDAO {
 			}else {
 				System.out.println("Empréstimo encerrado com sucesso! ");
 			}
-		}catch(BusinessException e) {
-			throw new BusinessException("Erro ao encerrar o empréstimo: " + e.getMessage());
 		}catch(SQLException e) {
-			throw new BusinessException("Erro ao encerrar o empréstimo: " + e.getMessage());
+			throw new DBException(e.getMessage());
 		}
 		finally {
 			DB.closeStatement(st);

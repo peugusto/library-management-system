@@ -14,7 +14,22 @@ public class Usuario {
 	}
 	
 	public Usuario(String nome, String email) {
-		super();
+		
+	    if (nome == null || nome.trim().isEmpty()) {
+	        throw new IllegalArgumentException("Nome não pode ser null ou vazio");
+	    }
+
+	    if (nome.matches("\\d+")) {
+	        throw new IllegalArgumentException("Nome inválido — não pode ser apenas números");
+	    }
+
+	    if (email == null || email.trim().isEmpty()) {
+	        throw new IllegalArgumentException("Email não pode ser null ou vazio");
+	    }
+
+	    if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+	        throw new IllegalArgumentException("Email inválido");
+	    }
 		this.nome = nome;
 		this.email = email;
 		this.dataCadastro = LocalDate.now();
