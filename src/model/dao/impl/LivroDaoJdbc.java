@@ -11,6 +11,7 @@ import db.DB;
 import db.DBException;
 import model.dao.LivroDAO;
 import model.entities.Livro;
+import model.entities.enums.StatusLivro;
 import model.services.BusinessException;
 
 public class LivroDaoJdbc implements LivroDAO{
@@ -37,7 +38,7 @@ public class LivroDaoJdbc implements LivroDAO{
 				book.setId(rs.getInt("id"));
 				book.setAutor(rs.getString("autor"));
 				book.setTitulo(rs.getString("titulo"));
-				book.setDisponivel(rs.getInt("disponivel"));
+				book.setDisponivel(StatusLivro.valueOf(rs.getString("status"))); 
 				book.setAnoPublicacao(rs.getString("ano_publicacao"));
 				
 				allBooks.add(book);
@@ -56,11 +57,11 @@ public class LivroDaoJdbc implements LivroDAO{
 		PreparedStatement st = null;
 		
 		try {
-			st = conn.prepareStatement("INSERT INTO livro (autor,titulo,ano_publicacao,diponivel) VALUES (?,?,?,?)");
+			st = conn.prepareStatement("INSERT INTO livro (autor,titulo,ano_publicacao,status) VALUES (?,?,?,?)");
 			st.setString(1, book.getAutor());
 			st.setString(2,book.getTitulo());
 			st.setString(3, book.getAnoPublicacao());
-			st.setBoolean(4, book.getDisponivel());
+			st.setString(4, book.getDisponivel().toString());
 			int rows = st.executeUpdate();
 			
 			if (rows > 0) {
@@ -144,7 +145,7 @@ public class LivroDaoJdbc implements LivroDAO{
 	            livro.setTitulo(rs.getString("titulo"));
 	            livro.setAutor(rs.getString("autor"));
 	            livro.setAnoPublicacao(rs.getString("ano_publicacao"));
-	            livro.setDisponivel(rs.getInt("disponivel")); 
+	            livro.setDisponivel(StatusLivro.valueOf(rs.getString("status"))); 
 	            
 	        }else {
 				throw new BusinessException("Nenhum livro encontrado ou ID inválido.");

@@ -147,7 +147,7 @@ public class Program {
 							System.out.print("Digite o insira o ano de publicação do livro: ");
 							String data = reader.readLine();
 
-							Livro obj = new Livro(autor, titulo, data);
+							Livro obj = new Livro(titulo, autor, data);
 							service.adicionarLivro(obj);
 
 							System.out.println("Pressione qualquer tecla para voltar ao menu.");

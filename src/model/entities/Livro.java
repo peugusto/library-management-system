@@ -1,10 +1,13 @@
 package model.entities;
+
+import model.entities.enums.StatusLivro;
+
 public class Livro {
 	private Integer id;
 	private String titulo;
 	private String autor;
 	private String anoPublicacao;
-	private Boolean disponivel;
+	private StatusLivro disponivel;
 	
 	public Livro() {}
 	
@@ -13,7 +16,7 @@ public class Livro {
 		this.titulo = titulo;
 		this.autor = autor;
 		this.anoPublicacao = anoPublicacao;
-		this.disponivel = true;
+		this.disponivel = StatusLivro.DISPONIVEL;
 	}
 	public Integer getId() {
 		return id;
@@ -39,15 +42,13 @@ public class Livro {
 	public void setAnoPublicacao(String anoPublicacao) {
 		this.anoPublicacao = anoPublicacao;
 	}
-	public Boolean getDisponivel() {
+	public StatusLivro getDisponivel() {
 		return disponivel;
 	}
-	public void setDisponivel(int d) {
-		if (d == 0) {
-			this.disponivel = false;
-			return;
-		}
-		this.disponivel = true;
+
+	public void setDisponivel(StatusLivro status) {
+		this.disponivel = status;
+		
 	}
 	
 	

@@ -2,12 +2,14 @@ package model.entities;
 
 import java.time.LocalDate;
 
+import model.entities.enums.StatusUsuario;
+
 public class Usuario {
 	private Integer id;
 	private String nome;
 	private String email;
 	private LocalDate dataCadastro;
-	private Boolean ativo;
+	private StatusUsuario ativo;
 	
 	public Usuario() {
 		
@@ -30,10 +32,12 @@ public class Usuario {
 	    if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
 	        throw new IllegalArgumentException("Email inválido");
 	    }
+	    
+	    
 		this.nome = nome;
 		this.email = email;
 		this.dataCadastro = LocalDate.now();
-		this.ativo = true;
+		this.ativo = StatusUsuario.ATIVO;
 	}
 	public void setId(int id) {
 		this.id = id;
@@ -59,15 +63,12 @@ public class Usuario {
 	public void setDataCadastro(LocalDate dataCadastro) {
 		this.dataCadastro = dataCadastro;
 	}
-	public Boolean getAtivo() {
-		return ativo;
+	public StatusUsuario getAtivo() {
+		return this.ativo;
 	}
-	public void setAtivo(int ativo) {
-		if (ativo == 0) {
-			this.ativo = false;
-			return;
-		}
-		this.ativo = true;
+
+	public void setAtivo(StatusUsuario statusUsuario) {
+		this.ativo = statusUsuario;
 	}
 	
 }

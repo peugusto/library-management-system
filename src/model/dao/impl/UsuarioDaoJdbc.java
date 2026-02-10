@@ -11,6 +11,7 @@ import db.DB;
 import db.DBException;
 import model.dao.UsuarioDAO;
 import model.entities.Usuario;
+import model.entities.enums.StatusUsuario;
 import model.services.BusinessException;
 
 public class UsuarioDaoJdbc implements UsuarioDAO {
@@ -38,7 +39,7 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 				user.setId(rs.getInt("id"));
 				user.setNome(rs.getString("nome"));
 				user.setEmail(rs.getString("email"));
-				user.setAtivo(rs.getInt("ativo"));
+	            user.setAtivo(StatusUsuario.valueOf(rs.getString("status"))); 
 				allUsers.add(user);
 			}
 				
@@ -76,11 +77,11 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 		PreparedStatement st = null;
 
 		try {
-			st = conn.prepareStatement("INSERT INTO usuario (nome,email,data_cadastro,ativo) VALUES (?,?,?,?)");
+			st = conn.prepareStatement("INSERT INTO usuario (nome,email,data_cadastro,status) VALUES (?,?,?,?)");
 			st.setString(1, user.getNome());
 			st.setString(2, user.getEmail());
 			st.setDate(3, java.sql.Date.valueOf(user.getDataCadastro()));
-			st.setBoolean(4, user.getAtivo());
+			st.setString(4, user.getAtivo().toString());
 			
 			int rows =st.executeUpdate();
 			
@@ -154,7 +155,7 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 		    Usuario usuario = null;
 
 		    try {
-		        st = conn.prepareStatement("SELECT id, nome, email, data_cadastro, ativo FROM usuario WHERE id = ?");
+		        st = conn.prepareStatement("SELECT id, nome, email, data_cadastro, status FROM usuario WHERE id = ?");
 		        st.setInt(1, id);
 
 		        rs = st.executeQuery();
@@ -164,7 +165,7 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 		            usuario.setId(rs.getInt("id"));
 		            usuario.setNome(rs.getString("nome"));
 		            usuario.setEmail(rs.getString("email"));
-		            usuario.setAtivo(rs.getInt("ativo")); 
+		            usuario.setAtivo(StatusUsuario.valueOf(rs.getString("status"))); 
 
 		        }else {
 		        	throw new BusinessException("Usuario não existe ou ID inválido.");
