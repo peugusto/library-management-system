@@ -45,7 +45,8 @@ public class Program {
 					System.out.println("1. Cadastrar usuário");
 					System.out.println("2. Listar usuário.");
 					System.out.println("3. Excluir usuário");
-					System.out.println("4. Sair");
+					System.out.println("4. Desativar usuário");
+					System.out.println("5. Sair");
 					System.out.print("Opção: ");
 					opUsuario = Integer.parseInt(reader.readLine());
 
@@ -81,21 +82,29 @@ public class Program {
 								System.out.println("ID: " + u.getId());
 								System.out.println("Nome: " + u.getNome());
 								System.out.println("Email: " + u.getEmail());
-								System.out.println("Ativo: " + u.getAtivo());
+								System.out.println("Ativo: " + u.getAtivo().toString());
 								System.out.println("------");
 							}
+							int opEdit = 0;
+							do {
+								System.out.println("1.Editar email de um usuário.");
+								System.out.println("2. Sair.");
 
-							System.out.print("Digite o id do usuario para editar o email: ");
-							int id = Integer.parseInt(reader.readLine());
+								if (opEdit == 1) {
 
-							System.out.print("Digite o novo email: ");
-							String email = reader.readLine();
+									System.out.print("Digite o id do usuario para editar o email: ");
+									int id = Integer.parseInt(reader.readLine());
 
-							service.editarEmail(id, email);
+									System.out.print("Digite o novo email: ");
+									String email = reader.readLine();
+
+									service.editarEmail(id, email);
+								}
+							} while (opEdit != 2);
 
 						} catch (BusinessException e) {
 							System.out.println("ERRO: " + e.getMessage());
-						}catch (DBException e) {
+						} catch (DBException e) {
 							System.out.println("ERRO: " + e.getMessage());
 						} catch (IOException e) {
 							System.out.println("ERROR: " + e.getMessage());
@@ -115,7 +124,26 @@ public class Program {
 							reader.readLine();
 						} catch (BusinessException e) {
 							System.out.println("ERRO: " + e.getMessage());
-						}catch (DBException e) {
+						} catch (DBException e) {
+							System.out.println("ERRO: " + e.getMessage());
+						} catch (IOException e) {
+							System.out.println("ERROR: " + e.getMessage());
+						}
+						break;
+					case 4:
+
+						try {
+							UsuarioService service = new UsuarioService();
+							System.out.println("Digite o id do usuário para deletar: ");
+							int id = Integer.parseInt(reader.readLine());
+
+							service.desativarUsuário(id);
+
+							System.out.println("Pressione qualquer tecla para voltar ao menu.");
+							reader.readLine();
+						} catch (BusinessException e) {
+							System.out.println("ERRO: " + e.getMessage());
+						} catch (DBException e) {
 							System.out.println("ERRO: " + e.getMessage());
 						} catch (IOException e) {
 							System.out.println("ERROR: " + e.getMessage());
@@ -123,7 +151,8 @@ public class Program {
 						break;
 					}
 
-				} while (opUsuario != 4);
+				} while (opUsuario != 5);
+				break;
 			case 2:
 				int opLivro = 0;
 				do {
@@ -157,7 +186,7 @@ public class Program {
 							System.out.println("ERROR: " + e.getMessage());
 						} catch (BusinessException e) {
 							System.out.println("ERROR: " + e.getMessage());
-						}catch (DBException e) {
+						} catch (DBException e) {
 							System.out.println("ERRO: " + e.getMessage());
 						}
 
@@ -177,7 +206,7 @@ public class Program {
 								System.out.println("Titulo: " + livro.getTitulo());
 								System.out.println("Autor: " + livro.getAutor());
 								System.out.println("Ano de publicação: " + livro.getAnoPublicacao());
-								System.out.println("Disponivel: " + livro.getDisponivel());
+								System.out.println("Disponivel: " + livro.getDisponivel().toString());
 								System.out.println("------");
 							}
 
@@ -185,7 +214,7 @@ public class Program {
 							reader.readLine();
 						} catch (BusinessException e) {
 							System.out.println("ERROR: " + e.getMessage());
-						}catch (DBException e) {
+						} catch (DBException e) {
 							System.out.println("ERRO: " + e.getMessage());
 						} catch (IOException e) {
 							System.out.println("ERROR: " + e.getMessage());
@@ -205,7 +234,7 @@ public class Program {
 							System.out.println("ERROR: " + e.getMessage());
 						} catch (BusinessException e) {
 							System.out.println("ERROR: " + e.getMessage());
-						}catch (DBException e) {
+						} catch (DBException e) {
 							System.out.println("ERRO: " + e.getMessage());
 						}
 						break;
@@ -232,7 +261,7 @@ public class Program {
 					System.out.println("ERROR: " + e.getMessage());
 				} catch (BusinessException e) {
 					System.out.println("ERROR: " + e.getMessage());
-				}catch (DBException e) {
+				} catch (DBException e) {
 					System.out.println("ERRO: " + e.getMessage());
 				}
 
@@ -258,21 +287,21 @@ public class Program {
 					System.out.println("Titulo: " + livro.getTitulo());
 					System.out.println("Acaba em: " + emp.getDataFim());
 					System.out.println("-----");
-					
+
 					int opEmprestimo = 0;
-					
+
 					do {
 						System.out.println("1. Encerrar o empréstimo");
 						System.out.println("2. Prolongar o empréstimo");
 						System.out.println("3. Sair");
 						opEmprestimo = Integer.parseInt(reader.readLine());
-						switch(opEmprestimo) {
+						switch (opEmprestimo) {
 						case 1:
 							System.out.println("Pressione qualquer tecla para confirmar.");
 							reader.readLine();
 							emp.encerrar();
 							service.cancelarEmprestimo(emp);
-							
+
 							System.out.println("Pressione qualquer tecla para voltar ao menu.");
 							reader.readLine();
 							op = 3;
@@ -281,21 +310,20 @@ public class Program {
 							System.out.println("A Renovação adicionará 7 dias no empréstimo.");
 							System.out.println("Pressione qualquer tecla para confirmar.");
 							reader.readLine();
-							
+
 							emp.renovar();
 							service.atualizarEmprestimo(emp);
 							op = 3;
 							break;
 
 						}
-					}while(op != 3);
-
+					} while (op != 3);
 
 				} catch (IOException e) {
 					System.out.println("ERROR: " + e.getMessage());
 				} catch (BusinessException e) {
 					System.out.println("ERROR: " + e.getMessage());
-				}catch (DBException e) {
+				} catch (DBException e) {
 					System.out.println("ERRO: " + e.getMessage());
 				}
 

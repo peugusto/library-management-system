@@ -11,4 +11,5 @@ public interface UsuarioDAO {
 	Usuario getUserById(Integer id);
 	void deleteUserById(Integer id);
 	Boolean existeUsuario(Integer id);
+	void encerrarUsuario(Integer id);
 }

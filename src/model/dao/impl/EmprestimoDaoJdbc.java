@@ -4,12 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import db.DB;
 import db.DBException;
 import model.dao.EmprestimoDAO;
 import model.entities.Emprestimo;
 import model.entities.enums.StatusEmprestimo;
+import model.entities.enums.StatusLivro;
 import model.services.BusinessException;
 
 public class EmprestimoDaoJdbc implements EmprestimoDAO {
@@ -35,8 +37,15 @@ public class EmprestimoDaoJdbc implements EmprestimoDAO {
 			
 			int row = st.executeUpdate();
 			
-			if(row > 0) {
+			st = conn.prepareStatement("UPDATE livro SET status = ? WHERE id = ?");
+			st.setString(1, StatusLivro.OCUPADO.toString());
+			st.setInt(2, emprestimo.getId_livro());
+			
+			int rowBook = st.executeUpdate();
+			
+			if(row > 0 && rowBook > 0) {
 				System.out.println("Empréstimo concluído com sucesso.");
+				
 			}else {
 				throw new BusinessException("Erro ao concluir o emprestimo.");
 			}
@@ -118,10 +127,17 @@ public class EmprestimoDaoJdbc implements EmprestimoDAO {
 			
 			int rowsAffected = st.executeUpdate();
 			
-			if (rowsAffected == 0) {
-				throw new BusinessException("Empréstimo não foi atualizado devido a um erro com o ID.");
-			}else {
+			st = conn.prepareStatement("UPDATE livro SET status = ? WHERE id = ?");
+			st.setString(1, StatusLivro.DISPONIVEL.toString());
+			st.setInt(2, emprestimo.getId_livro());
+			
+			int rows = st.executeUpdate();
+			
+			if (rowsAffected > 0 && rows > 0) {
 				System.out.println("Empréstimo encerrado com sucesso! ");
+
+			}else {
+				throw new BusinessException("Empréstimo não foi atualizado devido a um erro com o ID.");
 			}
 		}catch(SQLException e) {
 			throw new DBException(e.getMessage());
@@ -130,6 +146,28 @@ public class EmprestimoDaoJdbc implements EmprestimoDAO {
 			DB.closeStatement(st);
 		}
 		
+	}
+
+	@Override
+	public Boolean existeHistorico(Integer id) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = conn.prepareStatement("SELECT * FROM emprestimo WHERE usuario_id = ?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			
+			if(rs.next()) {
+				return true;
+			}
+
+		} catch (SQLException e) {
+			throw new DBException(e.getMessage());
+		}finally {
+			DB.closeStatement(st);
+		}
+		return false;
 	}
 
 }

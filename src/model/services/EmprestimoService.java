@@ -5,6 +5,10 @@ import model.dao.EmprestimoDAO;
 import model.dao.LivroDAO;
 import model.dao.UsuarioDAO;
 import model.entities.Emprestimo;
+import model.entities.Livro;
+import model.entities.Usuario;
+import model.entities.enums.StatusLivro;
+import model.entities.enums.StatusUsuario;
 
 public class EmprestimoService {
 
@@ -16,12 +20,22 @@ public class EmprestimoService {
 	
 	public void salvarEmprestimo(int idLivro, int idUsuario) {
 		
+			
 			Boolean existeUsuario = usuario.existeUsuario(idUsuario);
 			Boolean existeLivro = livro.existeLivro(idLivro);
 			
 			if (existeUsuario && existeLivro) {
-				Emprestimo emp = new Emprestimo(idLivro,idUsuario);
-				emprestimo.salvar(emp);
+				Usuario u = usuario.getUserById(idUsuario);
+				Livro l = livro.getBookByID(idLivro);
+				
+				if(u.getAtivo() == StatusUsuario.ATIVO && l.getDisponivel() == StatusLivro.DISPONIVEL) {
+					Emprestimo emp = new Emprestimo(idLivro,idUsuario);
+					emprestimo.salvar(emp);
+				}else {
+					throw new BusinessException("Livro ou Usuario indisponivel para empréstimo");
+				}
+				
+
 			}else {
 				throw new BusinessException("Livro ou Usuario não existente");
 			}

@@ -5,6 +5,7 @@ import java.util.List;
 import model.dao.DaoFactory;
 import model.dao.LivroDAO;
 import model.entities.Livro;
+import model.entities.enums.StatusLivro;
 
 public class LivroService {
 	
@@ -14,8 +15,14 @@ public class LivroService {
 		if (id <= 0) {
 			throw new BusinessException("ID não pode ser menor que 0");
 		}
+		Livro l = retornar(id);
 		
-		livro.deleteBookByID(id);
+		if(l.getDisponivel() == StatusLivro.DISPONIVEL) {
+			livro.deleteBookByID(id);	
+		}else {
+			throw new BusinessException("Não é possível exlcuir um livro que esteja em empréstimo ativo");
+		}
+
     }
 	
 	public List<Livro> retonarLivros(){
@@ -41,7 +48,6 @@ public class LivroService {
 		if (id <= 0) {
 			throw new BusinessException("ID não pode ser menor que 0");
 		}
-		
 		return livro.getBookByID(id);
 	}
 	

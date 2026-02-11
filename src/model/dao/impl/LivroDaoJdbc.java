@@ -133,7 +133,7 @@ public class LivroDaoJdbc implements LivroDAO{
 	    
 	    try {
 	        st = conn.prepareStatement(
-	            "SELECT id, titulo, autor, ano_publicacao, disponivel FROM livro WHERE id = ?"
+	            "SELECT id, titulo, autor, ano_publicacao, status FROM livro WHERE id = ?"
 	        );
 	        st.setInt(1, id);
 

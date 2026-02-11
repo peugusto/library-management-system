@@ -6,9 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import db.DB;
 import db.DBException;
+import model.dao.DaoFactory;
+import model.dao.EmprestimoDAO;
 import model.dao.UsuarioDAO;
 import model.entities.Usuario;
 import model.entities.enums.StatusUsuario;
@@ -17,7 +18,7 @@ import model.services.BusinessException;
 public class UsuarioDaoJdbc implements UsuarioDAO {
 
 	private Connection conn = null;
-
+	private EmprestimoDAO emp = DaoFactory.createEmprestimo();
 	
 	public UsuarioDaoJdbc (Connection conn) {
 		this.conn = conn;
@@ -104,6 +105,7 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 		PreparedStatement st = null;
 		
 		try {
+			
 			st = conn.prepareStatement("DELETE FROM usuario WHERE id = ?");
 			st.setInt(1, id);
 			
@@ -150,7 +152,7 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 
 	@Override
 	public Usuario getUserById(Integer id) {
-		 PreparedStatement st = null;
+		 	PreparedStatement st = null;
 		    ResultSet rs = null;
 		    Usuario usuario = null;
 
@@ -179,6 +181,29 @@ public class UsuarioDaoJdbc implements UsuarioDAO {
 		    }
 
 		    return usuario;
+	}
+
+	@Override
+	public void encerrarUsuario(Integer id) {
+	 	PreparedStatement st = null;
+	    
+	    try {
+	    	
+			st = conn.prepareStatement("UPDATE usuario SET status = ? WHERE id = ?");	
+			st.setString(1, StatusUsuario.INATIVO.toString());
+			st.setInt(2, id);
+		
+			int rowsAffected = st.executeUpdate();
+			if (rowsAffected > 0) {
+				System.out.println("Usuário encerrado com sucesso.");
+			}
+			
+		}catch(SQLException e) {
+			throw new BusinessException("Problema ao encerrar o usuário.");
+		}finally {
+			DB.closeStatement(st);
+		}		
+		
 	}
 
 }
