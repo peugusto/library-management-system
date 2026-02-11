@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import db.DB;
 import db.DBException;
-import model.dao.DaoFactory;
-import model.dao.EmprestimoDAO;
 import model.dao.UsuarioDAO;
 import model.entities.Usuario;
 import model.entities.enums.StatusUsuario;
@@ -18,7 +16,6 @@ import model.services.BusinessException;
 public class UsuarioDaoJdbc implements UsuarioDAO {
 
 	private Connection conn = null;
-	private EmprestimoDAO emp = DaoFactory.createEmprestimo();
 	
 	public UsuarioDaoJdbc (Connection conn) {
 		this.conn = conn;
