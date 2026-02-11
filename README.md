@@ -35,7 +35,7 @@
 ---
 
 
-  ## Estrutura do Projeto
+  ## Estrutura do Projeto (MVC)
   ```
 └── 📁src
     └── 📁db
